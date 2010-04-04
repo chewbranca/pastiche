@@ -16,6 +16,11 @@
   .snippet-description
     %span.to-be-invisible Description:
     %input{ :class => :placeholder, :type => :text, :name => :description, :size => 32, :value => @snippet.description }
+  .snippet-reference_url
+    -#%span.to-be-invisible Reference URL (ie bug ticket):
+    %span Reference URL (ie bug ticket):
+    %br
+    %input{ :class => :placeholder, :type => :text, :name => :reference_url, :size => 32, :value => @snippet.reference_url }
   .clear
   %textarea{ :name => :text }= @snippet.text
   %input{ :type => :submit, :value => @submit_button }

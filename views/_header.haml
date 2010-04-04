@@ -1,23 +1,27 @@
 #header
-  .title
-    %h1
-      %a{ :href => path_to('/')} Pastiche
-    .description
-      %p Simple Pastebin Application
-    .clear
-  #navigations
-    #login
-      - if logged_in?
-        logged in as
-        %a{ :href => path_to("/user/#{@authd_user.nickname}") }= @authd_user.nickname
-      - else
-        %a{ :href => path_to('/login')} login
-    %ul
-      %li
-        %a{ :href => path_to('/new') } New snippet
-      - if logged_in?
-        %li
-          %a{ :href => path_to("/user/#{@authd_user.nickname}") } Profile
-        %li
-          %a{ :href => path_to('/logout') } Logout
-    .clear
+	.title
+		%h1
+			%a{ :href => path_to('/')} paste.chewbranca.com
+		.description
+			%p
+				Powered by
+				%a{:href => 'http://github.com/macks/pastiche'} Pastiche
+		.clear
+	#navigations
+		#login
+			- if logged_in?
+				logged in as
+				%a{ :href => path_to("/user/#{@authd_user.nickname}") }= @authd_user.nickname
+			- else
+				%a{ :href => path_to('/login')} login
+		%ul
+			%li
+				%a{ :href => path_to('/') } Latest
+			%li
+				%a{ :href => path_to('/new') } New snippet
+			- if logged_in?
+				%li
+					%a{ :href => path_to("/user/#{@authd_user.nickname}") } Profile
+				%li
+					%a{ :href => path_to('/logout') } Logout
+		.clear

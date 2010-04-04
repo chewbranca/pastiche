@@ -1,25 +1,29 @@
 - @page_title = @snippet.filename
 .rounded-box
-  .snippet.contents
-    .snippet-filename
-      = @snippet.filename
-    .snippet-author
-      by
-      %a{:href => path_to("/user/#{@snippet.user.nickname}") }= @snippet.user.nickname
-    .snippet-datetime
-      Modified at
-      = render_datetime(@snippet.updated_at)
-    .snippet-datetime
-      Created at
-      = render_datetime(@snippet.created_at)
-    - unless @snippet.description.empty?
-      .snippet-description= @snippet.description
-    .snippet-links
-      %a{ :href => path_to("/#{@snippet.id}/download") } download
-      %a{ :href => path_to("/#{@snippet.id}/raw/#{@snippet.filename}") } raw
-      - if logged_in? && @snippet.user == @authd_user
-        %a{ :href => path_to("/#{@snippet.id}/edit") } edit
-        %a{ :href => path_to("/#{@snippet.id}/delete") } delete
-    .clear
-    .snippet-body
-      != render_snippet(@snippet, :anchors => true)
+	.snippet.contents
+		.snippet-filename
+			= @snippet.filename
+		.snippet-author
+			by
+			%a{:href => path_to("/user/#{@snippet.user.nickname}") }= @snippet.user.nickname
+		.snippet-datetime
+			Modified at
+			= render_datetime(@snippet.updated_at)
+		.snippet-datetime
+			Created at
+			= render_datetime(@snippet.created_at)
+		- unless @snippet.description.empty?
+			.snippet-description= @snippet.description
+		- unless @snippet.reference_url.empty?
+			.snippet-reference_url
+				Reference URL:
+				%a{:href => @snippet.reference_url}= @snippet.reference_url
+		.snippet-links
+			%a{ :href => path_to("/#{@snippet.id}/download") } download
+			%a{ :href => path_to("/#{@snippet.id}/raw/#{@snippet.filename}") } raw
+			- if logged_in? && @snippet.user == @authd_user
+				%a{ :href => path_to("/#{@snippet.id}/edit") } edit
+				%a{ :href => path_to("/#{@snippet.id}/delete") } delete
+		.clear
+		.snippet-body
+			!= render_snippet(@snippet, :anchors => true)

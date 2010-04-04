@@ -24,12 +24,12 @@ class Pastiche < Sinatra::Base
   class User
     include DataMapper::Resource
     property :id,         Serial
-    property :openid,     String,   :nullable => false, :length => 128, :unique_index => :openid
-    property :nickname,   String,   :nullable => false, :length => 16, :unique_index => :nickname
+    property :openid,     String,   :required => true, :length => 128, :unique_index => :openid
+    property :nickname,   String,   :required => true, :length => 16, :unique_index => :nickname
     property :fullname,   String,   :length => 128
     property :email,      String,   :length => 128
-    property :created_at, DateTime, :nullable => false, :auto_validation => false
-    property :updated_at, DateTime, :nullable => false, :auto_validation => false
+    property :created_at, DateTime, :required => true, :auto_validation => false
+    property :updated_at, DateTime, :required => true, :auto_validation => false
 
     has n, :snippets
 
@@ -41,14 +41,15 @@ class Pastiche < Sinatra::Base
   class Snippet
     include DataMapper::Resource
     property :id,          Serial
-    property :user_id,     Integer,  :nullable => false
-    property :created_at,  DateTime, :nullable => false, :auto_validation => false, :index => :created
-    property :updated_at,  DateTime, :nullable => false, :auto_validation => false, :index => :updated
-    property :type,        String,   :nullable => false, :length => 40
-    property :filename,    String,   :nullable => false, :length => 128
+    property :user_id,     Integer,  :required => true
+    property :created_at,  DateTime, :required => true, :auto_validation => false, :index => :created
+    property :updated_at,  DateTime, :required => true, :auto_validation => false, :index => :updated
+    property :type,        String,   :required => true, :length => 40
+    property :filename,    String,   :required => true, :length => 128
     property :description, String,   :length => 512
-    property :tabstop,     Integer,  :nullable => false, :default => 8
-    property :text,        Text,     :nullable => false, :length => 65536
+    property :reference_url, String,   :length => 255
+    property :tabstop,     Integer,  :required => true, :default => 8
+    property :text,        Text,     :required => true, :length => 65536
 
     belongs_to :user
 
@@ -344,6 +345,7 @@ class Pastiche < Sinatra::Base
 
   def validate_snippet_parameters
     params[:filename].strip!
+    params[:reference_url].strip!
     params[:type].strip!
     params[:tabstop] = params[:tabstop].to_i
     params[:description].strip!
@@ -354,7 +356,7 @@ class Pastiche < Sinatra::Base
       redirect url_for('/new')
     end
 
-    [:filename, :type, :tabstop, :description, :text].inject({}) {|hash, key| hash[key] = params[key]; hash}
+    [:filename, :type, :tabstop, :description, :text, :reference_url].inject({}) {|hash, key| hash[key] = params[key]; hash}
   end
 
   def openid_consumer
